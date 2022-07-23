@@ -5,8 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         try {
-            Flower f = new Flower("Big ass", 4, 50);
-            f.printFLower();
+            printSentence();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -233,5 +232,23 @@ public class Main {
         return c;
     }
 
+    public static void reverselines() {
+        Scanner input = new Scanner(System.in);
+        String l1 = input.nextLine();
+        String l2 = input.nextLine();
+        String l3 = input.nextLine();
+        input.close();
+
+        System.out.println(l3);
+        System.out.println(l2);
+        System.out.println(l1);
+    }
+
+    public static void printSentence() {
+        for (int i = 1; i <= 100; i++) {
+            System.out.println(i + " - I will never spam my friends again");
+        }
+    }
     // Learn how to create Vs Code snippet
+    // Master regular expression
 }
