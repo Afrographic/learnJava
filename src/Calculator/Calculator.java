@@ -17,9 +17,11 @@ public class Calculator {
         input.close();
         a = removeBlank(a);
         if (correctOperation(a)) {
-            Operation op = splitOperation(a);
-            double result = compute(op.getFirstOperand(), op.getSign(), op.getSecondOperand());
-            System.out.println("Le resultat est " + result);
+            System.out.println("Good maths expression");
+            // Operation op = splitOperation(a);
+            // double result = compute(op.getFirstOperand(), op.getSign(),
+            // op.getSecondOperand());
+            // System.out.println("Le resultat est " + result);
         } else {
             System.out.println("Expression mathematique incorrecte!");
         }
@@ -63,7 +65,7 @@ public class Calculator {
     }
 
     public static Boolean correctOperation(String operation) {
-        return operation.matches("\\d+.?\\d*[+/*-]\\d+.?\\d*");
+        return operation.matches("(\\(*[.0-9+*/-]+\\)*)+");
     }
 
     public static char extractSign(String operation) {
@@ -76,4 +78,13 @@ public class Calculator {
         }
         return '+';
     }
+
+    public static Boolean matchParentheses(String str) {
+        Boolean matches = false;
+        StringBuilder masterStr = new StringBuilder(str);
+        // for(let )
+        return matches;
+    }
+
+    
 }
