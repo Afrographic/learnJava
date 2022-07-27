@@ -6,26 +6,20 @@ import java.util.regex.Pattern;
 
 public class Calculator {
     public static void main(String[] args) {
-        // init();
-        System.out.println("Le resultat est : " + computeComplexMath("1-1+2+1+1"));
-        // System.out.println(computeSimpleMath("2.0+1"));
-
+        init();
+        // System.out.println("Le resultat est : " +
 
     }
 
     public static void init() {
         System.out.println("--- SIMPLE CALCULATOR ---");
         Scanner input = new Scanner(System.in);
-        System.out.println("Entrez l'operation . Exple : 14/45 , 14+56 , 45-8 ..etc");
+        System.out.println("Entrez l'operation 😏");
         String a = input.nextLine();
         input.close();
         a = removeBlank(a);
         if (correctOperation(a) && matchParentheses(a)) {
-            System.out.println("Good maths expression");
-            Operation op = splitOperation(a);
-            double result = compute(op.getFirstOperand(), op.getSign(),
-                    op.getSecondOperand());
-            System.out.println("Le resultat est " + result);
+            System.out.println("Voici le resultat : " + computeComplexMath(a));
 
         } else {
             System.out.println("Expression mathematique incorrecte!");
@@ -41,14 +35,16 @@ public class Calculator {
 
     public static String computeComplexMath(String operation) {
         // We stop when there is nothing left to compute
-        if (hasNoSign(operation)) {
-            return operation;
-            // System.out.println("Yes we encounter something simple");
-            // return computeSimpleMath(operation);
+        if (isSimpleOperation(operation)) {
+            System.out.println("Now it becomes a simple math");
+            return computeSimpleMath(operation);
         }
 
         StringBuilder operationBuilder = new StringBuilder(operation);
         for (int i = 0; i <= operationBuilder.length() - 1; i++) {
+            if (operationBuilder.charAt(i) == '-') {
+                continue;
+            }
             int start = 0;
             int end = 0;
             if (operationBuilder.charAt(i) == '/' || operationBuilder.charAt(i) == '*'
@@ -57,6 +53,11 @@ public class Calculator {
                 StringBuilder firstOperand = new StringBuilder();
                 char sign = operationBuilder.charAt(i);
                 StringBuilder secondOperand = new StringBuilder();
+
+                // Make multiplication and division prioritary
+                if ((sign == '-' || sign == '+') && hasMultiOrDiv(operation)) {
+                    continue;
+                }
 
                 // Extracting the first operand
                 int j = i - 1;
@@ -75,18 +76,15 @@ public class Calculator {
                 end = k - 1;
 
                 // Compute the sub operation
-                String subOperation = firstOperand.toString() + sign + secondOperand.toString();
-                System.out.println("Sub operation " + subOperation);
+                String subOperation = firstOperand.reverse().toString() + sign + secondOperand.toString();
                 subOperation = computeSimpleMath(subOperation);
 
                 // Remove the operation we just compute from the string
                 operation = removePartOfString(operation, start, end + 1);
-                System.out.println("Operation without the operation just compute " + operation);
                 // Add the result to the string
                 operation = addSubstringToString(operation, start, subOperation);
-                System.out.println("Operation with the result of the previous operation " + operation);
-
-                return computeComplexMath(operation);
+                // Get out of the loop
+                break;
 
             }
 
@@ -116,10 +114,19 @@ public class Calculator {
     public static Operation splitOperation(String operation) {
         operation = removeParentheses(operation);
         String[] splitted = operation.split("[+/*-]");
+        StringBuilder operationB = new StringBuilder(operation);
+
         Operation op = new Operation();
-        op.setFirstOperand(splitted[0]);
-        op.setSign(extractSign(operation));
-        op.setSecondOperand(splitted[1]);
+        if (splitted.length == 2) {
+            op.setFirstOperand(splitted[0]);
+            op.setSign(extractSign(operation));
+            op.setSecondOperand(splitted[1]);
+        }
+        if (splitted.length == 3) {
+            op.setFirstOperand(operationB.charAt(0) + splitted[1]);
+            op.setSign(extractSign(operation));
+            op.setSecondOperand(splitted[2]);
+        }
 
         return op;
     }
@@ -196,11 +203,15 @@ public class Calculator {
     }
 
     public static Boolean isSimpleOperation(String str) {
-        return str.matches("[\\d.]+[+/*-][\\d.]+");
+        return str.matches("-?[\\d.]+[+/*-][\\d.]+");
     }
 
     public static Boolean hasNoSign(String str) {
         return !str.matches(".*[+/*-].*");
+    }
+
+    public static Boolean hasMultiOrDiv(String operation) {
+        return operation.matches(".*[/*].*");
     }
 
 }
