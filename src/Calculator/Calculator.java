@@ -42,9 +42,9 @@ public class Calculator {
 
         StringBuilder operationBuilder = new StringBuilder(operation);
         for (int i = 0; i <= operationBuilder.length() - 1; i++) {
-            if (operationBuilder.charAt(i) == '-') {
-                continue;
-            }
+            // if (operationBuilder.charAt(i) == '-') {
+            // continue;
+            // }
             int start = 0;
             int end = 0;
             if (operationBuilder.charAt(i) == '/' || operationBuilder.charAt(i) == '*'
@@ -54,6 +54,11 @@ public class Calculator {
                 char sign = operationBuilder.charAt(i);
                 StringBuilder secondOperand = new StringBuilder();
 
+                // When the operation starts with a minus sign
+                if (sign == '-' && i == 0) {
+                    continue;
+                }
+
                 // Make multiplication and division prioritary
                 if ((sign == '-' || sign == '+') && hasMultiOrDiv(operation)) {
                     continue;
@@ -61,7 +66,7 @@ public class Calculator {
 
                 // Extracting the first operand
                 int j = i - 1;
-                while (j >= 0 && isANumberOrDot(operationBuilder.charAt(j))) {
+                while (j >= 0 && (isANumberOrDot(operationBuilder.charAt(j)) || isNegative(operationBuilder.charAt(j)))) {
                     firstOperand.append(operationBuilder.charAt(j));
                     j--;
                 }
@@ -76,6 +81,7 @@ public class Calculator {
                 end = k - 1;
 
                 // Compute the sub operation
+
                 String subOperation = firstOperand.reverse().toString() + sign + secondOperand.toString();
                 subOperation = computeSimpleMath(subOperation);
 
@@ -212,6 +218,10 @@ public class Calculator {
 
     public static Boolean hasMultiOrDiv(String operation) {
         return operation.matches(".*[/*].*");
+    }
+
+    public static Boolean isNegative(char character) {
+        return character == '-';
     }
 
 }
