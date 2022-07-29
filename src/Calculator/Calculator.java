@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 public class Calculator {
     public static void main(String[] args) {
         init();
-        // System.out.println("Le resultat est : " +
 
     }
 
@@ -19,7 +18,12 @@ public class Calculator {
         input.close();
         a = removeBlank(a);
         if (correctOperation(a) && matchParentheses(a)) {
-            System.out.println("Voici le resultat : " + computeComplexMath(a));
+
+            if (haveParentheses(a)) {
+                System.out.println("Compute complex Math with parentheses");
+            } else {
+                System.out.println("Voici le resultat : " + computeComplexMath(a));
+            }
 
         } else {
             System.out.println("Expression mathematique incorrecte!");
@@ -27,6 +31,7 @@ public class Calculator {
     }
 
     public static String computeSimpleMath(String operation) {
+
         Operation op = splitOperation(operation);
         double result = compute(op.getFirstOperand(), op.getSign(),
                 op.getSecondOperand());
@@ -42,9 +47,7 @@ public class Calculator {
 
         StringBuilder operationBuilder = new StringBuilder(operation);
         for (int i = 0; i <= operationBuilder.length() - 1; i++) {
-            // if (operationBuilder.charAt(i) == '-') {
-            // continue;
-            // }
+
             int start = 0;
             int end = 0;
             if (operationBuilder.charAt(i) == '/' || operationBuilder.charAt(i) == '*'
@@ -55,20 +58,25 @@ public class Calculator {
                 StringBuilder secondOperand = new StringBuilder();
 
                 // When the operation starts with a minus sign
-                if (sign == '-' && i == 0) {
-                    continue;
-                }
-
-                // Make multiplication and division prioritary
-                if ((sign == '-' || sign == '+') && hasMultiOrDiv(operation)) {
+                if ((sign == '-' && i == 0) || ((sign == '-' || sign == '+') && hasMultiOrDiv(operation))) {
                     continue;
                 }
 
                 // Extracting the first operand
                 int j = i - 1;
-                while (j >= 0 && (isANumberOrDot(operationBuilder.charAt(j)) || isNegative(operationBuilder.charAt(j)))) {
+                while (j >= 0) {
+
+                    if (isASign(operationBuilder.charAt(j))) {
+                        if (operationBuilder.charAt(j) == '-') {
+                            firstOperand.append(operationBuilder.charAt(j));
+                            j--;
+                        }
+                        break;
+                    }
+
                     firstOperand.append(operationBuilder.charAt(j));
                     j--;
+
                 }
                 start = j + 1;
 
@@ -174,19 +182,57 @@ public class Calculator {
         return '+';
     }
 
-    public static Boolean matchParentheses(String str) {
-        StringBuilder masterStr = new StringBuilder(str);
-        int totalOpenParen = 0;
-        int totalCloseParen = 0;
-        for (int i = 0; i < masterStr.length(); i++) {
-            if (masterStr.charAt(i) == '(') {
-                totalOpenParen++;
-            }
-            if (masterStr.charAt(i) == ')') {
-                totalCloseParen++;
+    public static Boolean haveParentheses(String str) {
+
+        StringBuilder strB = new StringBuilder(str);
+        for (int i = 0; i < strB.length(); i++) {
+            if (strB.charAt(i) == '(' || strB.charAt(i) == ')') {
+                return true;
             }
         }
-        return totalCloseParen == totalOpenParen;
+        return false;
+    }
+
+    public static String extractParentheses(String str) {
+        StringBuilder strB = new StringBuilder(str);
+        StringBuilder parentheses = new StringBuilder();
+        for (int i = 0; i < strB.length(); i++) {
+            if (strB.charAt(i) == '(' || strB.charAt(i) == ')') {
+                parentheses.append(strB.charAt(i));
+            }
+        }
+
+        return parentheses.toString();
+    }
+
+    public static Boolean matchParentheses(String str) {
+        str = extractParentheses(str);
+        System.out.println("Parentheses : " + str);
+        int numberOfClosedParenthesesRemaining = 0;
+        Boolean findClosedBeforeOpen = false;
+        StringBuilder strB = new StringBuilder(str);
+
+        for (int i = 0; i < strB.length(); i++) {
+            if ((strB.charAt(i) == ')' && i == 0)
+                    || (strB.charAt(i) == ')' && numberOfClosedParenthesesRemaining == 0)) {
+                findClosedBeforeOpen = true;
+                break;
+            }
+
+            if (strB.charAt(i) == '(') {
+                numberOfClosedParenthesesRemaining++;
+            }
+
+            if (strB.charAt(i) == ')' && numberOfClosedParenthesesRemaining > 0) {
+                numberOfClosedParenthesesRemaining--;
+            }
+        }
+
+        if (findClosedBeforeOpen) {
+            return false;
+        } else {
+            return numberOfClosedParenthesesRemaining == 0;
+        }
     }
 
     public static Boolean isANumberOrDot(char character) {
@@ -220,8 +266,8 @@ public class Calculator {
         return operation.matches(".*[/*].*");
     }
 
-    public static Boolean isNegative(char character) {
-        return character == '-';
+    public static Boolean isASign(char character) {
+        return character == '-' || character == '+' || character == '*' || character == '/';
     }
 
 }
