@@ -107,7 +107,8 @@ public class Calculator {
                 StringBuilder secondOperand = new StringBuilder();
 
                 // When the operation starts with a minus sign
-                if ((sign == '-' && i == 0) || ((sign == '-' || sign == '+') && hasMultiOrDiv(operation))) {
+                if (((sign == '-' || sign == '+') && i == 0)
+                        || ((sign == '-' || sign == '+') && hasMultiOrDiv(operation))) {
                     continue;
                 }
 
@@ -158,6 +159,7 @@ public class Calculator {
         }
 
         // Recursive call
+        operation = removeDoubleSigns(operation);
         System.out.println("New operation we have " + operation);
         return computeComplexMath(operation);
 
@@ -321,6 +323,15 @@ public class Calculator {
 
     public static Boolean isASign(char character) {
         return character == '-' || character == '+' || character == '*' || character == '/';
+    }
+
+    public static String removeDoubleSigns(String operation) {
+        operation = operation.replaceAll("[+]{2}", "+");
+        operation = operation.replace("--", "-");
+        operation = operation.replace("\\+-", "-");
+        operation = operation.replace("-\\+", "-");
+
+        return operation;
     }
 
 }
