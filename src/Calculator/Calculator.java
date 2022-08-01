@@ -20,9 +20,9 @@ public class Calculator {
         if (correctOperation(a) && matchParentheses(a)) {
 
             if (haveParentheses(a)) {
-                System.out.println("Compute complex Math with parentheses");
+                System.out.println("Voici le resultat : " + computeMathWithParentheses(a));
             } else {
-                System.out.println("Voici le resultat : " + computeComplexMath(a));
+                System.out.println("Voici le resultat : \n\n " + computeComplexMath(a) + "\n\n\n");
             }
 
         } else {
@@ -30,19 +30,68 @@ public class Calculator {
         }
     }
 
-    public static String computeSimpleMath(String operation) {
+    public static String computeMathWithParentheses(String operation) {
+        // We stop when there is no parentheses
+        if (!haveParentheses(operation)) {
+            System.out.println("Now it becomes a complex math");
+            return computeComplexMath(operation);
+        }
 
-        Operation op = splitOperation(operation);
+        StringBuilder operationBuilder = new StringBuilder(operation);
+        for (int i = 0; i <= operationBuilder.length() - 1; i++) {
+            if (i <= operationBuilder.length() - 2 && operationBuilder.charAt(i) == '('
+                    && isNumberOrNegativeSign(operationBuilder.charAt(i + 1))) {
+
+                // Extracting the operation
+                StringBuilder complexOp = new StringBuilder();
+                int k = i + 1;
+                while (operationBuilder.charAt(k) != ')' && k <= operationBuilder.length() - 1) {
+                    complexOp.append(operationBuilder.charAt(k));
+                    k++;
+                }
+
+                if (haveParentheses(complexOp.toString())) {
+                    continue;
+                }
+
+                // Removing the operation from the original operation
+                int start = i;
+                int end = k + 1;
+                operation = removePartOfString(operation, start, end);
+
+                // Compute the complex operation extracted
+                String subOperation = computeComplexMath(complexOp.toString());
+
+                // Add the result to the string
+                operation = addSubstringToString(operation, start, subOperation);
+                // Get out of the loop
+                break;
+            }
+        }
+
+        // Recursive call
+        System.out.println("New Parentheses operation we have " + operation);
+        return computeMathWithParentheses(operation);
+    }
+
+    public static String computeSimpleMath(String operation) {
+        Operation op = extractOperandAndSign(operation);
         double result = compute(op.getFirstOperand(), op.getSign(),
                 op.getSecondOperand());
-        return Double.toString(result);
+        return result > 0 ? "+" + Double.toString(result) : Double.toString(result);
     }
 
     public static String computeComplexMath(String operation) {
+
         // We stop when there is nothing left to compute
         if (isSimpleOperation(operation)) {
             System.out.println("Now it becomes a simple math");
             return computeSimpleMath(operation);
+        }
+
+        // If the operation has no sign return the same thing
+        if (isInteger(operation)) {
+            return operation;
         }
 
         StringBuilder operationBuilder = new StringBuilder(operation);
@@ -82,11 +131,15 @@ public class Calculator {
 
                 // Extracting the second operand
                 int k = i + 1;
+                if (operationBuilder.charAt(k) == '-') {
+                    secondOperand.append(operationBuilder.charAt(k));
+                    k++;
+                }
                 while (k <= operationBuilder.length() - 1 && isANumberOrDot(operationBuilder.charAt(k))) {
                     secondOperand.append(operationBuilder.charAt(k));
                     k++;
                 }
-                end = k - 1;
+                end = k;
 
                 // Compute the sub operation
 
@@ -94,7 +147,7 @@ public class Calculator {
                 subOperation = computeSimpleMath(subOperation);
 
                 // Remove the operation we just compute from the string
-                operation = removePartOfString(operation, start, end + 1);
+                operation = removePartOfString(operation, start, end);
                 // Add the result to the string
                 operation = addSubstringToString(operation, start, subOperation);
                 // Get out of the loop
@@ -125,23 +178,16 @@ public class Calculator {
         }
     }
 
-    public static Operation splitOperation(String operation) {
+    public static Operation extractOperandAndSign(String operation) {
         operation = removeParentheses(operation);
-        String[] splitted = operation.split("[+/*-]");
-        StringBuilder operationB = new StringBuilder(operation);
-
         Operation op = new Operation();
-        if (splitted.length == 2) {
-            op.setFirstOperand(splitted[0]);
-            op.setSign(extractSign(operation));
-            op.setSecondOperand(splitted[1]);
+        Pattern pattern = Pattern.compile("(-?\\+?[\\d.]*)([+/*-])(-?\\+?[\\d.]*)");
+        Matcher matcher = pattern.matcher(operation);
+        if (matcher.find()) {
+            op.setFirstOperand(matcher.group(1));
+            op.setSign(new StringBuilder(matcher.group(2)).charAt(0));
+            op.setSecondOperand(matcher.group(3));
         }
-        if (splitted.length == 3) {
-            op.setFirstOperand(operationB.charAt(0) + splitted[1]);
-            op.setSign(extractSign(operation));
-            op.setSecondOperand(splitted[2]);
-        }
-
         return op;
     }
 
@@ -242,6 +288,13 @@ public class Calculator {
         return string.matches("[\\d.]");
     }
 
+    public static Boolean isNumberOrNegativeSign(char character) {
+        StringBuilder str = new StringBuilder();
+        str.append(character);
+        String string = str.toString();
+        return string.matches("[\\d-]");
+    }
+
     public static String removePartOfString(String str, int start, int end) {
         StringBuilder strB = new StringBuilder(str);
         strB.delete(start, end);
@@ -255,11 +308,11 @@ public class Calculator {
     }
 
     public static Boolean isSimpleOperation(String str) {
-        return str.matches("-?[\\d.]+[+/*-][\\d.]+");
+        return str.matches("-?[\\d.]+[+/*-]-?[\\d.]+");
     }
 
-    public static Boolean hasNoSign(String str) {
-        return !str.matches(".*[+/*-].*");
+    public static Boolean isInteger(String str) {
+        return str.matches("-?\\+?[\\d.]+");
     }
 
     public static Boolean hasMultiOrDiv(String operation) {
