@@ -2,13 +2,38 @@ import java.lang.System.Logger;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import implement.BoxedItem;
+
 public class Main {
     public static void main(String[] args) {
         try {
-            printSentence();
+            ArrayList<Integer> values = new ArrayList<>();
+            values.add(2);
+            System.out.println(values.get(0));
+
+            String[] boobs = { "un", "deux" };
+            int[] asses = { 1, 2 };
+
+            System.out.println("Before " + boobs[0]);
+            boobs = swap(boobs);
+            System.out.println("After " + boobs[0]);
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static <T> T[] swap(T[] array) {
+        T temp = array[0];
+        array[0] = array[1];
+        array[1] = temp;
+        return array;
+    }
+
+    public static void fuckIt(int a) {
+        if (a == 0)
+            throw new IllegalArgumentException("Stupid");
+        System.out.println("Yeah, i will be a billionniare in dollars");
     }
 
     public static Boolean isMultiple(long n, long m) {
