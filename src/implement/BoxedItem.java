@@ -2,7 +2,21 @@ package implement;
 
 public class BoxedItem implements Sellable {
 
+    private class Boobs {
+        String size;
+
+        public Boobs(String size) {
+            this.size = size;
+        }
+
+        public void pressIt() {
+            System.out.println("Pressing some random boobs");
+        }
+    }
+
     public BoxedItem() {
+        Boobs b = new Boobs("Damn soft");
+        b.pressIt();
         System.out.println("Fuck bumby ass and press bumby soft rebounding boobs!");
     }
 

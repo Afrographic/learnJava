@@ -23,6 +23,7 @@ public class Main {
         }
     }
 
+    // Generic helps to create methods for any object
     public static <T> T[] swap(T[] array) {
         T temp = array[0];
         array[0] = array[1];
