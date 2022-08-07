@@ -1,31 +1,32 @@
 package polynomial;
 
 public class BasicPolynomial {
-
-    private int coef;
+    static int totalPoly = 0;
+    private double coef;
     private int degree;
 
-    public BasicPolynomial(int coef, int degree) {
+    public BasicPolynomial(double coef, int degree) {
         this.coef = coef;
         this.degree = degree;
     }
 
     @Override
     public String toString() {
-        if (coef == 0) {
-            return "0";
-        }
         if (degree == 0) {
-            return coef + "x";
+            return coef > 0 ? "+" + coef : "" + coef;
         }
-        return coef + "x^(" + degree + ')';
+        if (degree == 1) {
+            return (coef > 0 ? "+" + coef : coef) + "x";
+        }
+
+        return (coef > 0 ? "+" + coef : coef) + "x^" + degree;
     }
 
-    public int getCoef() {
+    public double getCoef() {
         return coef;
     }
 
-    public void setCoef(int coef) {
+    public void setCoef(double coef) {
         this.coef = coef;
     }
 
