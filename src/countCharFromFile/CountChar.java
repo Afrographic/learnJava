@@ -2,6 +2,8 @@ package countCharFromFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -9,12 +11,89 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class CountChar {
     static int alphabetIndexTracker = 0;
     static CharCount[] alphabetsCharsCounter = new CharCount[26];
-    static char[] alphabets = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
-            'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+    static char[] alphabets = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+            'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+    static String fileName = "none";
 
     public static void main(String[] args) {
+
         initCounterAlphabtet();
         pickFile();
+        initRenderer();
+
+    }
+
+    public static void initCounterAlphabtet() {
+        for (int i = 0; i <= alphabets.length - 1; i++) {
+            CharCount charCount = new CharCount(alphabets[i]);
+            alphabetsCharsCounter[alphabetIndexTracker] = charCount;
+            alphabetIndexTracker++;
+        }
+    }
+
+    public static String extractLabelsForTemplate() {
+        StringBuilder stringToReplace = new StringBuilder();
+        stringToReplace.append("[");
+        for (char character : alphabets) {
+            stringToReplace.append("'" + character + "',");
+        }
+        stringToReplace.append("]");
+        return stringToReplace.toString();
+    }
+
+    public static String extractCharOccurenceForTemplate() {
+        StringBuilder stringToReplace = new StringBuilder();
+        stringToReplace.append("[");
+        for (CharCount charCount : alphabetsCharsCounter) {
+            stringToReplace.append("'" + charCount.getTotalOccurence() + "',");
+        }
+        stringToReplace.append("]");
+        return stringToReplace.toString();
+    }
+ 
+    public static void initRenderer() {
+        // Get the working directory
+        File directory = new File("");
+        String workingDir = directory.getAbsolutePath();
+
+        File renderFile = new File(workingDir + "/src/countCharFromFile/render/render.html");
+        StringBuilder fileContent = extractFileContent(renderFile);
+        System.out.println(fileContent);
+
+        replaceTemplateVariable(fileContent.toString(), renderFile);
+    }
+
+    public static void replaceTemplateVariable(String fileContent, File renderFile) {
+        String labels = extractLabelsForTemplate();
+        String data = extractCharOccurenceForTemplate();
+        fileContent = fileContent.replace("Ankh_file_name", fileName);
+        fileContent = fileContent.replace("Ankh_labels", labels);
+        fileContent = fileContent.replace("Ankh_data", data);
+        replaceFileContent(fileContent, renderFile);
+    }
+
+    public static void replaceFileContent(String fileContent, File renderFile) {
+        try {
+
+            FileWriter fooWriter = new FileWriter(renderFile, false);
+            fooWriter.write(fileContent);
+            fooWriter.close();
+
+            // Open the renderer
+            openFile(renderFile);
+        } catch (Exception e) {
+            System.out.println("Unable to open the renderer");
+        }
+
+    }
+
+    public static void openFile(File file) {
+        try {
+            Runtime.getRuntime().exec(new String[] { file.getAbsolutePath() });
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public static void pickFile() {
@@ -28,49 +107,44 @@ public class CountChar {
         }
     }
 
-    public static void initCounterAlphabtet() {
-        for (int i = 0; i <= alphabets.length - 1; i++) {
-            CharCount charCount = new CharCount(alphabets[i]);
-            alphabetsCharsCounter[alphabetIndexTracker] = charCount;
-            alphabetIndexTracker++;
-        }
-    }
-
-    public static void processFile(File file) {
-        System.out.println("==========================");
-        System.out.println("File : " + file.getName());
-        System.out.println("==========================");
+    public static StringBuilder extractFileContent(File file) {
         try {
             StringBuilder fileContent = new StringBuilder();
             Scanner myReader = new Scanner(file);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                fileContent.append(removeWhiteSpace(data));
+                fileContent.append(data);
             }
             myReader.close();
-            // Init the counter
-            countOccurences(fileContent);
+            return fileContent;
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
+            return new StringBuilder();
         }
+
+    }
+
+    public static void processFile(File file) {
+        fileName = file.getName();
+        StringBuilder fileContent = extractFileContent(file);
+        countOccurences(fileContent);
     }
 
     public static String removeWhiteSpace(String str) {
-        return str.toLowerCase().replaceAll("\s+", "");
+        return str;
+        // return str.replaceAll("\s+", "");
     }
 
     public static void countOccurences(StringBuilder str) {
+        str = new StringBuilder(removeWhiteSpace(str.toString()).toUpperCase());
         for (int i = 0; i <= str.length() - 1; i++) {
             if (inAlphabetsArray(str.charAt(i))) {
-
                 int alphabetIndex = getIndexFromCharCounter(str.charAt(i));
                 alphabetsCharsCounter[alphabetIndex].increment();
             }
         }
 
-        // render
-        printOccurences();
     }
 
     public static int getIndexFromCharCounter(char character) {
