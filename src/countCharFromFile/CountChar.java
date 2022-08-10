@@ -50,20 +50,24 @@ public class CountChar {
         stringToReplace.append("]");
         return stringToReplace.toString();
     }
- 
-    public static void initRenderer() {
-        // Get the working directory
+
+    public static File getFileFromLocale(String relativePath) {
         File directory = new File("");
         String workingDir = directory.getAbsolutePath();
+        return new File(workingDir + relativePath);
+    }
 
-        File renderFile = new File(workingDir + "/src/countCharFromFile/render/render.html");
+    public static void initRenderer() {
+        // Get the working directory
+        File renderFile = getFileFromLocale("/src/countCharFromFile/render/template.html");
         StringBuilder fileContent = extractFileContent(renderFile);
         System.out.println(fileContent);
 
-        replaceTemplateVariable(fileContent.toString(), renderFile);
+        replaceTemplateVariable(fileContent.toString());
     }
 
-    public static void replaceTemplateVariable(String fileContent, File renderFile) {
+    public static void replaceTemplateVariable(String fileContent) {
+        File renderFile = getFileFromLocale("/src/countCharFromFile/render/render.html");
         String labels = extractLabelsForTemplate();
         String data = extractCharOccurenceForTemplate();
         fileContent = fileContent.replace("Ankh_file_name", fileName);
@@ -89,9 +93,10 @@ public class CountChar {
 
     public static void openFile(File file) {
         try {
-            Runtime.getRuntime().exec(new String[] { file.getAbsolutePath() });
+            Runtime.getRuntime()
+                    .exec(new String[] { "rundll32", "url.dll,FileProtocolHandler", file.getAbsolutePath() });
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+          
             e.printStackTrace();
         }
     }
