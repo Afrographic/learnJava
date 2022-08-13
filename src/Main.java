@@ -1,5 +1,6 @@
 import java.lang.System.Logger;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 import implement.BoxedItem;
@@ -7,20 +8,24 @@ import implement.BoxedItem;
 public class Main {
     public static void main(String[] args) {
         try {
-            ArrayList<Integer> values = new ArrayList<>();
-            values.add(2);
-            System.out.println(values.get(0));
-
-            String[] boobs = { "un", "deux" };
-            int[] asses = { 1, 2 };
-
-            System.out.println("Before " + boobs[0]);
-            boobs = swap(boobs);
-            System.out.println("After " + boobs[0]);
+            String a = "i4sDxjhsd";
+            char[] x = a.toCharArray();
+            System.out.println(x[0]);
+            x[0] = '4';
+            String b = new String(x);
+            System.out.println(b);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void generateRandom() {
+        Random rand = new Random();
+        rand.setSeed(System.currentTimeMillis());
+        boolean i = rand.nextBoolean();
+
+        System.out.println(i);
     }
 
     // Generic helps to create methods for any object
