@@ -4,12 +4,7 @@ import java.util.Arrays;
 
 public class Array {
     public static void main(String[] args) {
-        int[] arr = new int[20];
-        Arrays.fill(arr, 10);
-        arr[0] = 100;
-        arr[1] = 1;
-        int a = Arrays.binarySearch(arr, 2);
-        System.out.println(a);
+        matrix();
         // System.out.println(arr[a]);
         // int[] sorted = insertionSort(arr);
         // System.out.println(Arrays.toString(sorted));
@@ -27,5 +22,11 @@ public class Array {
             }
         }
         return array;
+    }
+
+    public static void matrix() {
+        int[] matrix = new int[10];
+        matrix[0]=10;
+        System.out.println(matrix[0]);
     }
 }
