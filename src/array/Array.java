@@ -25,8 +25,8 @@ public class Array {
     }
 
     public static void matrix() {
-        int[] matrix = new int[10];
-        matrix[0]=10;
-        System.out.println(matrix[0]);
+        int[][] matrix = new int[10][10];
+        matrix[0][1]=10;
+        System.out.println(matrix[0][1]);
     }
 }
