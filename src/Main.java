@@ -2,7 +2,6 @@ import java.lang.System.Logger;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
-
 import implement.BoxedItem;
 
 public class Main {

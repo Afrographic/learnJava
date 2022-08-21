@@ -30,7 +30,12 @@ public class SinglyLinkedList<E> {
     private Node<E> tail = null;
     private int size = 0;
 
-    public SinglyLinkedList() {
+    public Node<E> getHead() {
+        return head;
+    }
+
+    public SinglyLinkedList(E head) {
+        this.head = new Node(head, null);
     }
 
     public int size() {

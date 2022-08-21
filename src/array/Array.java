@@ -4,10 +4,17 @@ import java.util.Arrays;
 
 public class Array {
     public static void main(String[] args) {
-        matrix();
         // System.out.println(arr[a]);
         // int[] sorted = insertionSort(arr);
         // System.out.println(Arrays.toString(sorted));
+
+        int[] arr = new int[10];
+        Arrays.fill(arr, 10);
+        int[] b = Arrays.copyOf(arr,arr.length);
+
+        b[1] = 15;
+        System.out.println("value of arr "+arr[1]);
+        System.out.println("value of b "+b[1]);
     }
 
     public static int[] insertionSort(int[] array) {
