@@ -30,4 +30,14 @@ public class MeetGame {
         pl1.incrementTotalMeeting();
         return true;
     }
+
+    public Player exposeWinner(Player[] players) {
+        Player winner = players[0];
+        for (int i = 1; i <= players.length; i++) {
+            if (players[i].getTotalMeeting() > winner.getTotalMeeting()) {
+                winner = players[i];
+            }
+        }
+        return winner;
+    }
 }

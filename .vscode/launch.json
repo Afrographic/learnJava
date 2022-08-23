@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch SinglyLinkedList",
+            "request": "launch",
+            "mainClass": "linkedList.SinglyLinkedList",
+            "projectName": "untitled_742abe25"
+        },
+        {
+            "type": "java",
             "name": "Launch main",
             "request": "launch",
             "mainClass": "exercices.exo1.main",

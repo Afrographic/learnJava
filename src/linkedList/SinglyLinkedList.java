@@ -1,103 +1,106 @@
 package linkedList;
 
-public class SinglyLinkedList<E> {
-    private static class Node<E> {
-        private E data;
-        private Node<E> next;
+public class SinglyLinkedList {
+    private static class Node {
+        private int data;
+        private Node next;
 
-        public Node(E data, Node<E> next) {
+        public Node(int data) {
             this.data = data;
-            this.next = next;
+            this.next = null;
         }
 
-        public E getData() {
+        public int getData() {
             return data;
         }
 
-        public Node<E> getNext() {
+        public void setData(int data) {
+            this.data = data;
+        }
+
+        public Node getNext() {
             return next;
         }
 
-        public void setNext(Node<E> next) {
+        public void setNext(Node next) {
             this.next = next;
         }
 
     }
 
-    private E data;
-    private Node<E> next;
-    private Node<E> head = null;
-    private Node<E> tail = null;
-    private int size = 0;
+    private Node head = null;
 
-    public Node<E> getHead() {
+    public Node getHead() {
         return head;
     }
 
-    public SinglyLinkedList(E head) {
-        this.head = new Node(head, null);
-    }
-
-    public int size() {
-        return size;
-    }
-
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    public E last() {
-        if (isEmpty())
-            return null;
-        return tail.getData();
-    }
-
-    public E getData() {
-        return this.data;
-    }
-
-    public void setData(E data) {
-        this.data = data;
-    }
-
-    public Node<E> getNext() {
-        return this.next;
-    }
-
-    public void setNext(Node<E> next) {
-        this.next = next;
+    public SinglyLinkedList(Node head) {
+        this.head = head;
     }
 
     // Update methods
-    public void addFirst(E e) {
-        head = new Node<>(e, head);
-        if (size == 0) {
-            tail = head;
+    // public void addFirst(int e) {
+    // head = new Node<>(e);
+    // if (size == 0) {
+    // tail = head;
+    // }
+    // size++;
+    // }
+    public void printNodes() {
+        if (head == null)
+            return;
+        Node tmpHead = head;
+        while (tmpHead.getNext() != null) {
+
+            System.out.print(tmpHead.getData() + " -> ");
+
+            tmpHead = tmpHead.getNext();
         }
-        size++;
+        System.out.print(tmpHead.getData());
     }
 
-    public void addlast(E e) {
-        Node<E> newest = new Node<>(e, null);
-        if (isEmpty()) {
-            head = newest;
-        } else {
-            tail.setNext(newest);
+    public int getSize() {
+        if (head == null)
+            return 0;
+        int sizeList = 1;
+        Node temp = head;
+        while (temp.getNext() != null) {
+            sizeList++;
+            temp = temp.getNext();
         }
-        tail = newest;
-        size++;
+        return sizeList;
     }
 
-    public E removeFirst() {
-        if (isEmpty())
-            return null;
-        E answer = head.getData();
-        head = head.getNext();
-        size--;
-        if (size == 0) {
-            tail = null;
+    public SinglyLinkedList reverse() {
+        int temp = 0;
+        Node traverse = head;
+        while (traverse.next != null) {
+            temp = traverse.getData();
+            traverse.setData(traverse.next.getData());
+            traverse.next.setData(temp);
+            traverse = traverse.next;
         }
-        return answer;
+        return this;
+    }
+
+    public static void main(String[] args) {
+        // Create the nodes
+        Node a = new Node(11);
+        Node b = new Node(1);
+        Node c = new Node(2);
+        Node d = new Node(3);
+        Node e = new Node(4);
+        // Connecting the nodes
+        a.setNext(b);
+        b.setNext(c);
+        c.setNext(d);
+        d.setNext(e);
+        // Init SinglyLinkedList
+        SinglyLinkedList sll = new SinglyLinkedList(a);
+
+        sll = sll.reverse();
+
+        sll.printNodes();
     }
 
 }
