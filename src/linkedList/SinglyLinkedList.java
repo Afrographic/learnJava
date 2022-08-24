@@ -47,16 +47,13 @@ public class SinglyLinkedList {
     // size++;
     // }
     public void printNodes() {
-        if (head == null)
-            return;
         Node tmpHead = head;
         while (tmpHead.getNext() != null) {
-
             System.out.print(tmpHead.getData() + " -> ");
-
             tmpHead = tmpHead.getNext();
         }
         System.out.print(tmpHead.getData());
+        System.out.println("");
     }
 
     public int getSize() {
@@ -72,15 +69,17 @@ public class SinglyLinkedList {
     }
 
     public SinglyLinkedList reverse() {
-        int temp = 0;
-        Node traverse = head;
-        while (traverse.next != null) {
-            temp = traverse.getData();
-            traverse.setData(traverse.next.getData());
-            traverse.next.setData(temp);
-            traverse = traverse.next;
+        Node current = head;
+        Node previous = null;
+        Node next = null;
+        while (current != null) {
+            next = current.getNext();
+            current.setNext(previous);
+            previous = current;
+            current = next;
         }
-        return this;
+
+        return new SinglyLinkedList(previous);
     }
 
     public static void main(String[] args) {
@@ -90,16 +89,17 @@ public class SinglyLinkedList {
         Node c = new Node(2);
         Node d = new Node(3);
         Node e = new Node(4);
+
         // Connecting the nodes
         a.setNext(b);
         b.setNext(c);
         c.setNext(d);
         d.setNext(e);
+
         // Init SinglyLinkedList
         SinglyLinkedList sll = new SinglyLinkedList(a);
-
+        sll.printNodes();
         sll = sll.reverse();
-
         sll.printNodes();
     }
 
