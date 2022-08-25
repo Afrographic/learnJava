@@ -87,10 +87,13 @@ public class CircularLinkedList {
         cll1.printCll();
 
         // Building the second circular list
-        Node lastNodeForSecondList = this.getLastNode();
-        lastNodeForSecondList.setNext(headForSecondList);
-        System.out.println("Second Circular linked list");
+        Node next2 = headForSecondList;
+        while(next2.getNext()!=head){
+            next2 = next2.getNext();
+        }
+        next2.setNext(headForSecondList);
         CircularLinkedList cll2 = new CircularLinkedList(headForSecondList);
+        System.out.println("Second Circular linked list");
         cll2.printCll();
 
         CircularLinkedList[] cllArray = { cll1, cll2 };
@@ -105,8 +108,10 @@ public class CircularLinkedList {
         Node d = new Node(4);
         Node e = new Node(5);
         Node f = new Node(6);
-        Node g = new Node(6);
-        Node h = new Node(6);
+        Node g = new Node(7);
+        Node h = new Node(8);
+        Node i = new Node(8);
+        Node j = new Node(8);
         // Connecting the nodes
         a.setNext(b);
         b.setNext(c);
@@ -115,7 +120,9 @@ public class CircularLinkedList {
         e.setNext(f);
         f.setNext(g);
         g.setNext(h);
-        h.setNext(a);
+        h.setNext(i);
+        i.setNext(j);
+        j.setNext(a);
         // Circular Linked List instance
         CircularLinkedList cll = new CircularLinkedList(a);
         cll.printCll();

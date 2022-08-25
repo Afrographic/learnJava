@@ -2,9 +2,55 @@ package array;
 
 import java.util.Arrays;
 
+import javax.crypto.IllegalBlockSizeException;
+
 public class Array {
-    public static void main(String[] args) {
-        System.out.println("Repeated int "+ findFiveRepeatedInteger());
+    public static void main(String[] args) throws IllegalBlockSizeException {
+        int[][] a = new int[2][2];
+        a[0][0] = 2;
+        a[0][1] = 1;
+        a[1][0] = 2;
+        a[1][1] = 10;
+        int[][] b = new int[2][2];
+        b[0][0] = 3;
+        b[0][1] = 11;
+        b[1][0] = 45;
+        b[1][1] = 4;
+        int[][] c = multiplyMatrix(a, b);
+        printIntMatrix(c);
+    }
+
+    public static int[][] addMatrix(int[][] a, int[][] b) throws IllegalBlockSizeException {
+        if (a.length != b.length)
+            throw new IllegalBlockSizeException("Arrays must be the same size");
+        int[][] c = new int[a.length][a.length];
+        for (int i = 0; i <= a.length - 1; i++) {
+            for (int j = 0; j <= a.length - 1; j++) {
+                c[i][j] = a[i][j] + b[i][j];
+            }
+        }
+
+        return c;
+    }
+    public static int[][] multiplyMatrix(int[][] a, int[][] b) throws IllegalBlockSizeException {
+        if (a.length != b.length)
+            throw new IllegalBlockSizeException("Arrays must be the same size");
+        int[][] c = new int[a.length][a.length];
+        for (int i = 0; i <= a.length - 1; i++) {
+            for (int j = 0; j <= a.length - 1; j++) {
+                c[i][j] = a[i][j] * b[i][j];
+            }
+        }
+
+        return c;
+    }
+
+    public static void printIntMatrix(int[][] a) {
+        for (int i = 0; i <= a.length - 1; i++) {
+            for (int j = 0; j <= a.length - 1; j++) {
+                System.out.println(a[i][j]);
+            }
+        }
     }
 
     public static int findFiveRepeatedInteger() {

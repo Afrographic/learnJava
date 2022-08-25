@@ -29,13 +29,36 @@ public class SinglyLinkedList {
     }
 
     private Node head = null;
+    private Node tail = null;
+
+    public Node getTail() {
+        return tail;
+    }
+
+    public void setTail(Node node) {
+        this.tail = node;
+    }
 
     public Node getHead() {
         return head;
     }
 
+    public void addNode(Node node) {
+        tail.setNext(node);
+        this.setTail(node);
+    }
+
+    public void remove(Node node) {
+        
+    }
+
+    public void setHead(Node head) {
+        this.head = head;
+    }
+
     public SinglyLinkedList(Node head) {
         this.head = head;
+        this.tail = this.getlastNodeFromStarterNode(head);
     }
 
     // Update methods
@@ -68,6 +91,10 @@ public class SinglyLinkedList {
         return sizeList;
     }
 
+    public SinglyLinkedList clone() {
+        return new SinglyLinkedList(head);
+    }
+
     public SinglyLinkedList reverse() {
         Node current = head;
         Node previous = null;
@@ -82,6 +109,24 @@ public class SinglyLinkedList {
         return new SinglyLinkedList(previous);
     }
 
+    public SinglyLinkedList rotate(Node node) {
+        // Get the last Node
+        Node lastNode = getlastNodeFromStarterNode(node);
+        Node oldHead = head;
+        head = node.getNext();
+        node.setNext(null);
+        lastNode.setNext(oldHead);
+        return new SinglyLinkedList(head);
+    }
+
+    Node getlastNodeFromStarterNode(Node starterNode) {
+        Node starter = starterNode;
+        while (starter.getNext() != null) {
+            starter = starter.getNext();
+        }
+        return starter;
+    }
+
     public static void main(String[] args) {
         // Create the nodes
         Node a = new Node(11);
@@ -89,6 +134,7 @@ public class SinglyLinkedList {
         Node c = new Node(2);
         Node d = new Node(3);
         Node e = new Node(4);
+        Node f = new Node(44);
 
         // Connecting the nodes
         a.setNext(b);
@@ -98,9 +144,12 @@ public class SinglyLinkedList {
 
         // Init SinglyLinkedList
         SinglyLinkedList sll = new SinglyLinkedList(a);
+        sll.addNode(f);
+
         sll.printNodes();
-        sll = sll.reverse();
-        sll.printNodes();
+
+        // sll = sll.rotate(c);
+        // sll.printNodes();
     }
 
 }
