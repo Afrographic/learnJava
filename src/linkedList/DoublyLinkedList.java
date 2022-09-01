@@ -37,9 +37,11 @@ public class DoublyLinkedList {
     }
 
     private Node head;
+    private Node tail;
 
     DoublyLinkedList(Node head) {
         this.head = head;
+        this.tail = head.getNext();
     }
 
     public int getTotalNode() {
@@ -84,6 +86,22 @@ public class DoublyLinkedList {
         return true;
     }
 
+    public void remove(Node node) {
+        node.getPrev().setNext(node.getNext());
+    }
+
+    public void add(Node node) {
+        tail.setNext(node);
+    }
+
+    public void print() {
+        Node current = head;
+        while (current != null) {
+            System.out.print(current.getData()+"->");
+            current = current.getNext();
+        }
+    }
+
     public static void main(String[] args) {
 
      
@@ -91,8 +109,7 @@ public class DoublyLinkedList {
         Node node2 = new Node(3);
         Node node3 = new Node(4);
         Node node4 = new Node(5);
-        Node node5 = new Node(55);
-        Node node6 = new Node(55);
+     
 
         // Linking the nodes for dll1
         Node head = new Node(1);
@@ -106,28 +123,13 @@ public class DoublyLinkedList {
         node4.setPrev(node3);
 
         DoublyLinkedList dll = new DoublyLinkedList(head);
+    
+        dll.print();
+        dll.remove(node2);
+        System.out.println("Removed");
+        dll.print();
 
-        // Linking the nodes for dll2
-        Node head2 = new Node(1);
-        head2.setNext(node1);
-        node1.setNext(node2);
-        node1.setPrev(head2);
-        node2.setNext(node3);
-        node2.setPrev(node1);
-        node3.setNext(node4);
-        node3.setPrev(node2);
-        node4.setPrev(node3);
-        node4.setNext(node5);
-        node5.setPrev(node4);
-        node5.setNext(node6);
-        node6.setPrev(node5);
-
-      
-        DoublyLinkedList dll2 = new DoublyLinkedList(head2);
-
-        System.out.println("size 1 "+dll.getTotalNode());
-        System.out.println("size 2 "+dll2.getTotalNode());
-        System.out.println("Are equals " + equals(dll, dll2));
+ 
 
     }
 }

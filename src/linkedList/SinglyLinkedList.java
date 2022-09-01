@@ -49,7 +49,11 @@ public class SinglyLinkedList {
     }
 
     public void remove(Node node) {
-        
+        Node current = head;
+        while (current.getNext() != node) {
+            current = current.getNext();
+        }
+        current.setNext(node.getNext());
     }
 
     public void setHead(Node head) {
@@ -144,11 +148,15 @@ public class SinglyLinkedList {
 
         // Init SinglyLinkedList
         SinglyLinkedList sll = new SinglyLinkedList(a);
-        sll.addNode(f);
+
+        // sll.remove(c);
+        long startTime = System.nanoTime();
+        sll = sll.rotate(c);
+        long endTime = System.nanoTime();
+        System.out.println("Elapsed time " + (endTime - startTime));
 
         sll.printNodes();
 
-        // sll = sll.rotate(c);
         // sll.printNodes();
     }
 

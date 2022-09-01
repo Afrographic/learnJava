@@ -6,18 +6,20 @@ import javax.crypto.IllegalBlockSizeException;
 
 public class Array {
     public static void main(String[] args) throws IllegalBlockSizeException {
-        int[][] a = new int[2][2];
-        a[0][0] = 2;
-        a[0][1] = 1;
-        a[1][0] = 2;
-        a[1][1] = 10;
-        int[][] b = new int[2][2];
-        b[0][0] = 3;
-        b[0][1] = 11;
-        b[1][0] = 45;
-        b[1][1] = 4;
-        int[][] c = multiplyMatrix(a, b);
-        printIntMatrix(c);
+        int[] a = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        System.out.println("is 4 there ? " + binarySearch(0, a.length - 1, 111, a));
+    }
+
+    public static boolean binarySearch(int low, int high, int target, int[] array) {
+        int mid = (low + high) / 2;
+        if (low == high) {
+            return array[mid] == target;
+        }
+        if (array[mid] < target) {
+            return binarySearch(mid + 1, high, target, array);
+        } else {
+            return binarySearch(low, mid - 1, target, array);
+        }
     }
 
     public static int[][] addMatrix(int[][] a, int[][] b) throws IllegalBlockSizeException {
@@ -32,6 +34,7 @@ public class Array {
 
         return c;
     }
+
     public static int[][] multiplyMatrix(int[][] a, int[][] b) throws IllegalBlockSizeException {
         if (a.length != b.length)
             throw new IllegalBlockSizeException("Arrays must be the same size");
