@@ -5,9 +5,49 @@ import java.util.Arrays;
 import javax.crypto.IllegalBlockSizeException;
 
 public class Array {
-    public static void main(String[] args) throws IllegalBlockSizeException {
-        int[] a = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-        System.out.println("is 4 there ? " + binarySearch(0, a.length - 1, 111, a));
+    public static void main(String[] args) {
+        fibo(15);
+    }
+
+    public static void fibo(int n) {
+
+        int result = 0;
+        int[] temp = new int[2];
+        for (int i = 0; i <= n; i++) {
+            if (i == 0) {
+                System.out.println(0);
+                temp[0] = 0;
+                temp[1] = 0;
+            } else if (i == 1) {
+                System.out.println(1);
+                temp[0] = 0;
+                temp[1] = 1;
+
+            } else {
+                result =temp[0]+temp[1];
+                System.out.println(result + ",");
+                temp[0] = temp[1];
+                temp[1] = result;
+            }
+
+        }
+    }
+
+    public static void recursiveReverse(int[] a, int thisItemIndex, int toThatItemIndex) {
+        if (thisItemIndex < toThatItemIndex) {
+            int temp = a[thisItemIndex];
+            a[thisItemIndex] = a[toThatItemIndex];
+            a[toThatItemIndex] = temp;
+            recursiveReverse(a, thisItemIndex + 1, toThatItemIndex - 1);
+        }
+    }
+
+    public static int recursiveSum(int[] a, int starterIndex) {
+        if (starterIndex <= a.length - 1) {
+            return a[starterIndex] + recursiveSum(a, starterIndex + 1);
+        } else {
+            return 0;
+        }
     }
 
     public static boolean binarySearch(int low, int high, int target, int[] array) {
