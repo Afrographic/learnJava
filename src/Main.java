@@ -7,15 +7,21 @@ import implement.BoxedItem;
 public class Main {
     public static void main(String[] args) {
         try {
-            String a = "i4sDxjhsd";
-            char[] x = a.toCharArray();
-            System.out.println(x[0]);
-            x[0] = '4';
-            String b = new String(x);
-            System.out.println(b);
-
+            System.out.println(printHarmonic(4));
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+    
+    // public static int computeMatrixitems(int[][] matrix) {
+        
+    // }
+
+    public static double printHarmonic(int n) {
+        if (n == 1) {
+            return 1;
+        } else {
+            return printHarmonic(n - 1) + 1.0 / n;
         }
     }
 
@@ -153,7 +159,6 @@ public class Main {
                 largest = arr[i];
             }
         }
-
         return largest;
     }
 

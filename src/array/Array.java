@@ -6,7 +6,35 @@ import javax.crypto.IllegalBlockSizeException;
 
 public class Array {
     public static void main(String[] args) {
-        fibo(15);
+        int[] a = { 100, 5, 14, 14, 47 };
+        System.out.println("Index of the item " + binarySearchIterative(a,14));
+    }
+
+    public static int binarySearchIterative(int[] data, int target) {
+        int low = 0;
+        int high = data.length - 1;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (target == data[mid]) {
+                return mid;
+            } else if (target < data[mid]) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return -1;
+    }
+
+    public static int maxArray(int[] a, int max, int startingIndex) {
+        if (startingIndex == a.length - 1) {
+            return max;
+        } else {
+            if (a[startingIndex + 1] > max) {
+                max = a[startingIndex + 1];
+            }
+            return maxArray(a, max, startingIndex + 1);
+        }
     }
 
     public static void fibo(int n) {
@@ -24,7 +52,7 @@ public class Array {
                 temp[1] = 1;
 
             } else {
-                result =temp[0]+temp[1];
+                result = temp[0] + temp[1];
                 System.out.println(result + ",");
                 temp[0] = temp[1];
                 temp[1] = result;
@@ -50,10 +78,12 @@ public class Array {
         }
     }
 
-    public static boolean binarySearch(int low, int high, int target, int[] array) {
+    public static int binarySearch(int low, int high, int target, int[] array) {
         int mid = (low + high) / 2;
-        if (low == high) {
-            return array[mid] == target;
+        if (low >= high) {
+            boolean isFound = array[mid] == target;
+            return isFound ? mid : -1;
+
         }
         if (array[mid] < target) {
             return binarySearch(mid + 1, high, target, array);
