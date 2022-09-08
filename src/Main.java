@@ -7,14 +7,22 @@ import implement.BoxedItem;
 public class Main {
     public static void main(String[] args) {
         try {
-            System.out.println(printHarmonic(4));
+            System.out.println(mult(50,30));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    
+
+    public static int mult(int m, int n) {
+        if (n == 0) {
+            return 0;
+        } else {
+            return m + mult(m, n - 1);
+        }
+    }
+
     // public static int computeMatrixitems(int[][] matrix) {
-        
+
     // }
 
     public static double printHarmonic(int n) {
