@@ -6,8 +6,116 @@ import javax.crypto.IllegalBlockSizeException;
 
 public class Array {
     public static void main(String[] args) {
-        int[] a = { 100, 5, 14, 14, 47 };
-        System.out.println("Index of the item " + binarySearchIterative(a,14));
+        int[] a = { 1, 3, 4, 5, 6 };
+        System.out.println("Unsorted");
+        System.out.println(Arrays.toString(a));
+        System.out.println("Sorted");
+        System.out.println(Arrays.toString(findPairSum(a, 7)));
+    }
+
+    public static int[] findPairSum(int[] a, int sum) {
+        int[] result = new int[2];
+        for (int i = 0; i <= a.length - 1; i++) {
+            for (int j = i+1; j <= a.length - 1; j++) {
+                if (a[i] + a[j] == sum) {
+                    result[0] = a[i];
+                    result[1] = a[j];
+                    return result;
+                }
+            }
+        }
+        return result;
+    }
+
+    public static int[] sortRecursive(int[] a, int minIndex) {
+        if (minIndex == a.length - 1) {
+            return a;
+        } else {
+            for (int j = minIndex + 1; j <= a.length - 1; j++) {
+                if (a[j] < a[minIndex]) {
+                    int temp = a[j];
+                    a[j] = a[minIndex];
+                    a[minIndex] = temp;
+                }
+            }
+
+            return sortRecursive(a, minIndex + 1);
+        }
+    }
+
+    public static int[] sort(int[] a) {
+        int min = a[0];
+        int temp = 0;
+        for (int i = 0; i <= a.length - 1; i++) {
+            min = a[i];
+            for (int j = i + 1; j <= a.length - 1; j++) {
+                if (a[j] < min) {
+                    temp = a[j];
+                    a[j] = a[i];
+                    a[i] = temp;
+                }
+            }
+        }
+        return a;
+    }
+
+    public static int[] recursiveMoveEvenToFirst(int[] arr, int startingIndex) {
+        if (startingIndex == arr.length - 1) {
+            return arr;
+        } else {
+
+            int j = startingIndex + 1;
+            boolean foundEven = false;
+            for (j = startingIndex + 1; j <= arr.length - 1; j++) {
+                if (arr[j] % 2 == 0) {
+                    foundEven = true;
+                    break;
+                }
+            }
+
+            if (foundEven) {
+                int temp = arr[startingIndex];
+                arr[startingIndex] = arr[j];
+                int temp2 = arr[arr.length - 1];
+                arr[arr.length - 1] = temp;
+                arr[j] = temp2;
+            }
+
+            return recursiveMoveEvenToFirst(arr, startingIndex + 1);
+        }
+    }
+
+    public static int[] moveEvenToFirst(int[] arr) {
+        int indexToEndSearchOfEvenNumber = arr.length - 1;
+        for (int i = 0; i <= arr.length - 1; i++) {
+            if (arr[i] % 2 != 0) {
+                int j = i + 1;
+                boolean foundEven = false;
+                for (j = i + 1; j <= indexToEndSearchOfEvenNumber; j++) {
+                    if (arr[j] % 2 == 0) {
+                        foundEven = true;
+                        break;
+                    }
+                }
+                if (foundEven) {
+                    int temp = arr[i];
+                    arr[i] = arr[j];
+
+                    if (j == indexToEndSearchOfEvenNumber) {
+                        arr[j] = temp;
+                        break;
+                    } else {
+                        int temp2 = arr[indexToEndSearchOfEvenNumber];
+                        arr[indexToEndSearchOfEvenNumber] = temp;
+                        arr[j] = temp2;
+                        indexToEndSearchOfEvenNumber--;
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+        return arr;
     }
 
     public static int binarySearchIterative(int[] data, int target) {

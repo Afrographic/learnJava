@@ -29,7 +29,6 @@ public class app {
                 System.out.println(" " + file.getName() + " - " + file.length());
             }
         }
-
-       
+        
     }
 }

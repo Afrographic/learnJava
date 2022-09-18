@@ -1,15 +1,57 @@
 import java.lang.System.Logger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 import implement.BoxedItem;
 
 public class Main {
+    static char[] voyels = { 'a', 'e', 'i', 'o', 'u' };
+
     public static void main(String[] args) {
         try {
-            System.out.println(mult(50,30));
+           int i = 0 ;
+           for(i = 0 ; i<= 5;i++){
+               System.out.println("");
+           }
+            System.out.println(i);
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    public static boolean hasMoreVoyel(StringBuilder str, int starterIndex, int totalVoyel) {
+        if (starterIndex == str.length() - 1) {
+            return totalVoyel > str.length() - totalVoyel;
+        } else {
+            if (Arrays.binarySearch(voyels, str.charAt(starterIndex)) >= 0) {
+                totalVoyel++;
+            }
+            return hasMoreVoyel(str, starterIndex + 1, totalVoyel);
+        }
+    }
+
+    public static boolean isPalindrome(StringBuilder str, int starterIndex, int endingIndex) {
+        if (starterIndex >= endingIndex) {
+            return true;
+        } else {
+            if (str.charAt(starterIndex) == str.charAt(endingIndex)) {
+                return isPalindrome(str, starterIndex + 1, endingIndex - 1);
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public static String reverse(StringBuilder str, int starterIndex, int endingIndex) {
+        if (starterIndex >= endingIndex) {
+            return str.toString();
+        } else {
+            char temp = str.charAt(starterIndex);
+            str.setCharAt(starterIndex, str.charAt(endingIndex));
+            str.setCharAt(endingIndex, temp);
+
+            return reverse(str, starterIndex + 1, endingIndex - 1);
         }
     }
 
